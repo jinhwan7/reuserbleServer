@@ -1,7 +1,5 @@
 package com.reusable_server.reusableServer.member.application;
 
-
-
 import java.util.List;
 import java.util.Optional;
 
@@ -9,17 +7,24 @@ import org.springframework.stereotype.Service;
 
 import com.reusable_server.reusableServer.member.domain.Member;
 import com.reusable_server.reusableServer.member.infrastructure.MemberRepository;
+import com.reusable_server.reusableServer.member.presentation.dtos.MemberCreateDTO;
+import com.reusable_server.reusableServer.member.presentation.dtos.MemberUpdateDto;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
 
-	public MemberService(MemberRepository memberRepository) {
-		this.memberRepository = memberRepository;
-	}
+	public Member createMember(MemberCreateDTO memberCreateDTO) {
 
-	public Member createMember(Member member) {
-		// Perform additional validation if needed
+		Member member = Member.builder()
+			.name(memberCreateDTO.name())
+			.email(memberCreateDTO.email())
+			.password(memberCreateDTO.password())
+			.build();
+
 		return memberRepository.save(member);
 	}
 
@@ -31,12 +36,12 @@ public class MemberService {
 		return memberRepository.findAll();
 	}
 
-	public Member updateMember(Long id, Member updatedMember) {
+	public Member updateMember(Long id, MemberUpdateDto updatedMember) {
 		return memberRepository.findById(id)
 			.map(member -> {
-				member.setName(updatedMember.getName());
-				member.setEmail(updatedMember.getEmail());
-				member.setPassword(updatedMember.getPassword());
+				member.setName(updatedMember.name());
+				member.setEmail(updatedMember.email());
+				member.setPassword(updatedMember.password());
 				return memberRepository.save(member);
 			})
 			.orElseThrow(() -> new RuntimeException("Member not found"));
@@ -45,4 +50,5 @@ public class MemberService {
 	public void deleteMember(Long id) {
 		memberRepository.deleteById(id);
 	}
+
 }

@@ -10,6 +10,12 @@ import java.util.List;
 
 import com.reusable_server.reusableServer.member.application.MemberService;
 import com.reusable_server.reusableServer.member.domain.Member;
+import com.reusable_server.reusableServer.member.presentation.dtos.MemberCreateDTO;
+import com.reusable_server.reusableServer.member.presentation.dtos.MemberUpdateDto;
+import com.reusable_server.reusableServer.member.presentation.response.MemberCreateReponse;
+import com.reusable_server.reusableServer.member.presentation.response.MemberFindAllResponse;
+import com.reusable_server.reusableServer.member.presentation.response.MemberFindOneResponse;
+import com.reusable_server.reusableServer.member.presentation.response.MemberUpdateResponse;
 
 @RestController
 @RequestMapping("/api/members")
@@ -19,25 +25,34 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PostMapping
-	public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
-		return ResponseEntity.ok(memberService.createMember(member));
+	public MemberCreateReponse createMember(@Valid @RequestBody MemberCreateDTO memberCreateDTO) {
+		Member createdMember = memberService.createMember(memberCreateDTO);
+		return MemberCreateReponse.success(
+			createdMember.getId(),
+			createdMember.getName(),
+			createdMember.getEmail()
+		);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Member> findOne(@PathVariable Long id) {
+	public MemberFindOneResponse findOne(@PathVariable Long id) {
+
 		return memberService.findOne(id)
-			.map(ResponseEntity::ok)
-			.orElse(ResponseEntity.notFound().build());
+			.map((member) -> MemberFindOneResponse.success(member.getId(), member.getName(), member.getEmail()))
+			.orElse(MemberFindOneResponse.error("not found"));
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Member>> findAll() {
-		return ResponseEntity.ok(memberService.findAll());
+	public MemberFindAllResponse findAll() {
+		List<Member> members = memberService.findAll();
+		return MemberFindAllResponse.success(members);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Member> updateMember(@PathVariable Long id, @Valid @RequestBody Member member) {
-		return ResponseEntity.ok(memberService.updateMember(id, member));
+	public MemberUpdateResponse updateMember(@PathVariable Long id,
+		@Valid @RequestBody MemberUpdateDto memberUpdateDto) {
+		Member updatedMember = memberService.updateMember(id, memberUpdateDto);
+		return MemberUpdateResponse.success(updatedMember);
 	}
 
 	@DeleteMapping("/{id}")
