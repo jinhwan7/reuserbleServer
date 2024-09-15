@@ -1,7 +1,8 @@
 package com.reusable_server.reusableServer.member.presentation;
 
-
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +13,10 @@ import com.reusable_server.reusableServer.member.domain.Member;
 
 @RestController
 @RequestMapping("/api/members")
+@RequiredArgsConstructor
 public class MemberController {
 
 	private final MemberService memberService;
-
-	public MemberController(MemberService memberService) {
-		this.memberService = memberService;
-	}
 
 	@PostMapping
 	public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
