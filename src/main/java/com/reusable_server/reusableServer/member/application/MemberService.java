@@ -1,5 +1,7 @@
 package com.reusable_server.reusableServer.member.application;
 
+import com.reusable_server.reusableServer.common.enums.ReturnCode;
+import com.reusable_server.reusableServer.common.exception.ReuserbleException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +30,9 @@ public class MemberService {
 		return memberRepository.save(member);
 	}
 
-	public Optional<Member> findOne(Long id) {
-		return memberRepository.findById(id);
+	public Member findOne(Long id) {
+		return memberRepository.findById(id)
+														.orElseThrow(() -> new ReuserbleException(ReturnCode.NOT_FOUND_ENTITY));
 	}
 
 	public List<Member> findAll() {

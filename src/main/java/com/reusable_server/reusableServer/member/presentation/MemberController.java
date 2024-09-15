@@ -1,5 +1,8 @@
 package com.reusable_server.reusableServer.member.presentation;
 
+import com.reusable_server.reusableServer.common.dto.ApiResponse;
+import com.reusable_server.reusableServer.common.enums.ReturnCode;
+import com.reusable_server.reusableServer.member.presentation.dtos.MemberItemResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -25,39 +28,41 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PostMapping
-	public MemberCreateReponse signup(@Valid @RequestBody MemberCreateDTO memberCreateDTO) {
+	public ApiResponse<?> signup(@Valid @RequestBody MemberCreateDTO memberCreateDTO) {
 		Member createdMember = memberService.createMember(memberCreateDTO);
-		return MemberCreateReponse.success(
-			createdMember.getId(),
-			createdMember.getName(),
-			createdMember.getEmail()
-		);
+		return ApiResponse.of(ReturnCode.SUCCESS);
+		// TODO: DTO 변환 필요
+//		return MemberCreateReponse.success(
+//			createdMember.getId(),
+//			createdMember.getName(),
+//			createdMember.getEmail()
+//		);
 	}
 
 	@GetMapping("/{id}")
-	public MemberFindOneResponse findOne(@PathVariable Long id) {
-
-		return memberService.findOne(id)
-			.map((member) -> MemberFindOneResponse.success(member.getId(), member.getName(), member.getEmail()))
-			.orElse(MemberFindOneResponse.error("not found"));
+	public ApiResponse<?> findOne(@PathVariable Long id) {
+		Member member = memberService.findOne(id);
+		MemberItemResponse memberItemResponse = MemberItemResponse.of(member);
+		return ApiResponse.of(memberItemResponse);
 	}
 
 	@GetMapping
-	public MemberFindAllResponse findAll() {
+	public ApiResponse<?> findAll() {
 		List<Member> members = memberService.findAll();
-		return MemberFindAllResponse.success(members);
+		// TODO: DTO로 변환 필요
+		return ApiResponse.of(members);
 	}
 
 	@PutMapping("/{id}")
-	public MemberUpdateResponse updateMember(@PathVariable Long id,
+	public  ApiResponse<?> updateMember(@PathVariable Long id,
 		@Valid @RequestBody MemberUpdateDto memberUpdateDto) {
 		Member updatedMember = memberService.updateMember(id, memberUpdateDto);
-		return MemberUpdateResponse.success(updatedMember);
+		return ApiResponse.of(updatedMember);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
+	public ApiResponse<?> deleteMember(@PathVariable Long id) {
 		memberService.deleteMember(id);
-		return ResponseEntity.noContent().build();
+		return ApiResponse.of(ReturnCode.SUCCESS);
 	}
 }
