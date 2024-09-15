@@ -1,4 +1,4 @@
-qpackage com.reusable_server.reusableServer.member.presentation.dtos;
+package com.reusable_server.reusableServer.member.presentation.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
