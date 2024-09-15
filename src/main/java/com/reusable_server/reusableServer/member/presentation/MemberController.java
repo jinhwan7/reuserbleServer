@@ -25,7 +25,7 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PostMapping
-	public MemberCreateReponse createMember(@Valid @RequestBody MemberCreateDTO memberCreateDTO) {
+	public MemberCreateReponse signup(@Valid @RequestBody MemberCreateDTO memberCreateDTO) {
 		Member createdMember = memberService.createMember(memberCreateDTO);
 		return MemberCreateReponse.success(
 			createdMember.getId(),
