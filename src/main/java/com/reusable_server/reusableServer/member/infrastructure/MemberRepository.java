@@ -1,4 +1,4 @@
-package com.reusable_server.reusableServer.member.infrastructure.;
+package com.reusable_server.reusableServer.member.infrastructure;
 
 
 import com.reusable_server.reusableServer.member.domain.Member;
