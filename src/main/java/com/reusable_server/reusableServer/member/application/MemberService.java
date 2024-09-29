@@ -2,15 +2,16 @@ package com.reusable_server.reusableServer.member.application;
 
 import com.reusable_server.reusableServer.common.enums.ReturnCode;
 import com.reusable_server.reusableServer.common.exception.ReuserbleException;
+
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.reusable_server.reusableServer.member.application.dtos.MemberCreateParam;
+import com.reusable_server.reusableServer.member.application.dtos.MemberUpdateParam;
 import com.reusable_server.reusableServer.member.domain.Member;
 import com.reusable_server.reusableServer.member.infrastructure.MemberRepository;
-import com.reusable_server.reusableServer.member.presentation.dtos.MemberCreateDTO;
-import com.reusable_server.reusableServer.member.presentation.dtos.MemberUpdateDto;
+import com.reusable_server.reusableServer.member.presentation.dtos.request.MemberUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,12 +20,12 @@ import lombok.RequiredArgsConstructor;
 public class MemberService {
 	private final MemberRepository memberRepository;
 
-	public Member createMember(MemberCreateDTO memberCreateDTO) {
+	public Member createMember(MemberCreateParam memberCreateParam) {
 
 		Member member = Member.builder()
-			.name(memberCreateDTO.name())
-			.email(memberCreateDTO.email())
-			.password(memberCreateDTO.password())
+			.name(memberCreateParam.getName())
+			.email(memberCreateParam.getEmail())
+			.password(memberCreateParam.getPassword())
 			.build();
 
 		return memberRepository.save(member);
@@ -32,19 +33,19 @@ public class MemberService {
 
 	public Member findOne(Long id) {
 		return memberRepository.findById(id)
-														.orElseThrow(() -> new ReuserbleException(ReturnCode.NOT_FOUND_ENTITY));
+			.orElseThrow(() -> new ReuserbleException(ReturnCode.NOT_FOUND_ENTITY));
 	}
 
 	public List<Member> findAll() {
 		return memberRepository.findAll();
 	}
 
-	public Member updateMember(Long id, MemberUpdateDto updatedMember) {
+	public Member updateMember(Long id, MemberUpdateParam memberUpdateParam) {
 		return memberRepository.findById(id)
 			.map(member -> {
-				member.setName(updatedMember.name());
-				member.setEmail(updatedMember.email());
-				member.setPassword(updatedMember.password());
+				member.setName(memberUpdateParam.getName());
+				member.setEmail(memberUpdateParam.getEmail());
+				member.setPassword(memberUpdateParam.getPassword());
 				return memberRepository.save(member);
 			})
 			.orElseThrow(() -> new RuntimeException("Member not found"));
