@@ -31,7 +31,7 @@ public class MemberController {
 	@PostMapping
 	public ApiResponse<?> signup(@Valid @RequestBody MemberCreateRequest memberCreateDTO) {
 
-		//memberCreateDTO를 MemberCreateParam(컨트롤러->서비스)
+
 		MemberCreateParam memberCreateParam = MemberCreateParam.from(memberCreateDTO);
 
 		Member createdMember = memberService.createMember(memberCreateParam);
@@ -39,12 +39,6 @@ public class MemberController {
 		MemberSignupResponse memberSignupResponse = MemberSignupResponse.of(createdMember);
 		return ApiResponse.of(memberSignupResponse);
 
-		// TODO: DTO 변환 필요
-		//		return MemberCreateReponse.success(
-		//			createdMember.getId(),
-		//			createdMember.getName(),
-		//			createdMember.getEmail()
-		//		);
 	}
 
 	@GetMapping("/{id}")
@@ -58,7 +52,7 @@ public class MemberController {
 	public ApiResponse<?> findAll() {
 		List<Member> members = memberService.findAll();
 		MemberListResponse memberListResponse = MemberListResponse.of(members);
-		// TODO: DTO로 변환 필요
+
 		return ApiResponse.of(memberListResponse);
 	}
 
