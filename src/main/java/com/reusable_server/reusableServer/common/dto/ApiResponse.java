@@ -23,7 +23,7 @@ public class ApiResponse<T> {
 
   public static <T> ApiResponse of(ReturnCode returnCode) {
     ApiResponse<T> response = new ApiResponse<>();
-    response.returnCode = returnCode.getReturnCode()
+    response.returnCode = returnCode.getReturnCode();
     response.returnMessage = returnCode.getReturnMessage();
 
     return response;
