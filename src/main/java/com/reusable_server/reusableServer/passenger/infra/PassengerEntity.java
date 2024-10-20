@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.reusable_server.reusableServer.favoriteLocation.domain.FavoriteLocation;
 import com.reusable_server.reusableServer.favoriteLocation.infra.FavoriteLocationEntity;
+import com.reusable_server.reusableServer.match.imfra.MatchEntity;
 import com.reusable_server.reusableServer.passenger.domain.Passenger;
 
 import jakarta.persistence.Column;
@@ -36,6 +39,7 @@ public class PassengerEntity {
 	private String password;
 
 	@Column(name = "created_date_time")
+	@CreationTimestamp
 	private LocalDateTime createdDateTime;
 
 	@Column(name = "deleted_date_time")
@@ -44,6 +48,9 @@ public class PassengerEntity {
 	// Passenger는 여러 FavoriteLocation을 가질 수 있으므로, 일대다 관계로 설정
 	@OneToMany(mappedBy = "passenger")
 	private List<FavoriteLocationEntity> favoriteLocations = new ArrayList<>();
+
+	@OneToMany(mappedBy = "passenger")
+	private List<MatchEntity> matchs = new ArrayList<>();
 
 	// 도메인 모델로 변환하는 메서드
 	public Passenger toDomain() {

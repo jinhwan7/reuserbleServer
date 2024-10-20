@@ -2,6 +2,8 @@ package com.reusable_server.reusableServer.favoriteLocation.infra;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.reusable_server.reusableServer.favoriteLocation.domain.FavoriteLocation;
 import com.reusable_server.reusableServer.passenger.infra.PassengerEntity;
 
@@ -31,7 +33,7 @@ public class FavoriteLocationEntity {
 
 	//이 부분 어떻게 해야하는지
 	//보통 지우고 아래의 JoinColumn만 쓰는지
-	@Column(name = "passenger_id")
+	@Column(name = "passenger_id", insertable = false, updatable = false)
 	private Long passengerId;
 
 	private String name;
@@ -42,6 +44,7 @@ public class FavoriteLocationEntity {
 	private String icon;
 
 	@Column(name = "created_date_time")
+	@CreationTimestamp
 	private LocalDateTime createdDateTime;
 
 	@ManyToOne

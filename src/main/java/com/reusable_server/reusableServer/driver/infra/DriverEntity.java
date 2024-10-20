@@ -1,14 +1,20 @@
 package com.reusable_server.reusableServer.driver.infra;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.reusable_server.reusableServer.driver.domain.Driver;
+import com.reusable_server.reusableServer.match.imfra.MatchEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +37,11 @@ public class DriverEntity {
 	private String name;
 	private String password;
 
+	@OneToMany(mappedBy = "driver")
+	private List<MatchEntity> matchs = new ArrayList<>();
+
 	@Column(name = "created_date_time")
+	@CreationTimestamp
 	private LocalDateTime createdDateTime;
 
 	@Column(name = "deleted_date_time")
