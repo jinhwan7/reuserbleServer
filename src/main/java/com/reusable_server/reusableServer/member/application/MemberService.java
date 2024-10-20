@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import com.reusable_server.reusableServer.member.application.dtos.MemberCreateParam;
 import com.reusable_server.reusableServer.member.application.dtos.MemberUpdateParam;
 import com.reusable_server.reusableServer.member.domain.Member;
-import com.reusable_server.reusableServer.member.infrastructure.MemberRepository;
-import com.reusable_server.reusableServer.member.presentation.dtos.request.MemberUpdateRequest;
+import com.reusable_server.reusableServer.member.infra.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
