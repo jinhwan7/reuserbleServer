@@ -1,10 +1,13 @@
-package com.reusable_server.reusableServer.driver.infrastructure;
+package com.reusable_server.reusableServer.driver.infra;
 
 import java.time.LocalDateTime;
 
 import com.reusable_server.reusableServer.driver.domain.Driver;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -17,14 +20,21 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DriverEntity {
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "driver_id")
 	private Long driverId;
 
 	private String state;
 	private String email;
 	private String name;
 	private String password;
+
+	@Column(name = "created_date_time")
 	private LocalDateTime createdDateTime;
+
+	@Column(name = "deleted_date_time")
 	private LocalDateTime deletedDateTime;
 
 	// 도메인 모델로 변환하는 메서드
