@@ -1,9 +1,11 @@
 package com.reusable_server.reusableServer.passenger.infra;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.reusable_server.reusableServer.driver.domain.Driver;
-import com.reusable_server.reusableServer.driver.infra.DriverEntity;
+import com.reusable_server.reusableServer.favoriteLocation.domain.FavoriteLocation;
+import com.reusable_server.reusableServer.favoriteLocation.infra.FavoriteLocationEntity;
 import com.reusable_server.reusableServer.passenger.domain.Passenger;
 
 import jakarta.persistence.Column;
@@ -11,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +28,7 @@ public class PassengerEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "driver_id")
+	@Column(name = "passenger_id")
 	private Long passengerId;
 
 	private String email;
@@ -37,6 +40,10 @@ public class PassengerEntity {
 
 	@Column(name = "deleted_date_time")
 	private LocalDateTime deletedDateTime;
+
+	// Passenger는 여러 FavoriteLocation을 가질 수 있으므로, 일대다 관계로 설정
+	@OneToMany(mappedBy = "passenger")
+	private List<FavoriteLocationEntity> favoriteLocations = new ArrayList<>();
 
 	// 도메인 모델로 변환하는 메서드
 	public Passenger toDomain() {
