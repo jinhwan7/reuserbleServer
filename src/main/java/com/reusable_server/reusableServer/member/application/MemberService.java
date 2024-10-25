@@ -1,42 +1,50 @@
 package com.reusable_server.reusableServer.member.application;
 
-
+import com.reusable_server.reusableServer.common.enums.ReturnCode;
+import com.reusable_server.reusableServer.common.exception.ReuserbleException;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.reusable_server.reusableServer.member.application.dtos.MemberCreateParam;
+import com.reusable_server.reusableServer.member.application.dtos.MemberUpdateParam;
 import com.reusable_server.reusableServer.member.domain.Member;
-import com.reusable_server.reusableServer.member.infrastructure.MemberRepository;
+import com.reusable_server.reusableServer.member.infra.MemberRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
 
-	public MemberService(MemberRepository memberRepository) {
-		this.memberRepository = memberRepository;
-	}
+	public Member createMember(MemberCreateParam memberCreateParam) {
 
-	public Member createMember(Member member) {
-		// Perform additional validation if needed
+		Member member = Member.builder()
+			.name(memberCreateParam.getName())
+			.email(memberCreateParam.getEmail())
+			.password(memberCreateParam.getPassword())
+			.build();
+
 		return memberRepository.save(member);
 	}
 
-	public Optional<Member> findOne(Long id) {
-		return memberRepository.findById(id);
+	public Member findOne(Long id) {
+		return memberRepository.findById(id)
+			.orElseThrow(() -> new ReuserbleException(ReturnCode.NOT_FOUND_ENTITY));
 	}
 
 	public List<Member> findAll() {
 		return memberRepository.findAll();
 	}
 
-	public Member updateMember(Long id, Member updatedMember) {
+	public Member updateMember(Long id, MemberUpdateParam memberUpdateParam) {
 		return memberRepository.findById(id)
 			.map(member -> {
-				member.setName(updatedMember.getName());
-				member.setEmail(updatedMember.getEmail());
-				member.setPassword(updatedMember.getPassword());
+				member.setName(memberUpdateParam.getName());
+				member.setEmail(memberUpdateParam.getEmail());
+				member.setPassword(memberUpdateParam.getPassword());
 				return memberRepository.save(member);
 			})
 			.orElseThrow(() -> new RuntimeException("Member not found"));
@@ -45,4 +53,5 @@ public class MemberService {
 	public void deleteMember(Long id) {
 		memberRepository.deleteById(id);
 	}
+
 }
