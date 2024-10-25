@@ -1,6 +1,8 @@
 package com.reusable_server.reusableServer.driver.domain;
 
+import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +12,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Driver {
+
 	private Long id;
+
 	private String state;
 	private String email;
 	private String name;
 	private String password;
+
 
 	@Builder
 	public Driver(
@@ -23,7 +28,6 @@ public class Driver {
 		String name,
 		String password,
 		String email) {
-
 		this.id = id;
 		this.state = state;
 		this.name = name;

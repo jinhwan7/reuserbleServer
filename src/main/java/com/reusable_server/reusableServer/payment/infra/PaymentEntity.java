@@ -1,8 +1,10 @@
-qqpackage com.reusable_server.reusableServer.payment.infra;
+
+package com.reusable_server.reusableServer.payment.infra;
 
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
+
 
 import com.reusable_server.reusableServer.common.entity.BaseEntity;
 import com.reusable_server.reusableServer.driver.infra.DriverEntity;
@@ -33,6 +35,7 @@ public class PaymentEntity extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
+
 
 	@OneToOne
 	@JoinColumn(name = "match_id")  // payment 테이블이 match_id를 참조

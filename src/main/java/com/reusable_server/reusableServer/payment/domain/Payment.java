@@ -15,13 +15,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Payment {
+
 	private Long id;
 	private Match match;
 	private Passenger passenger;
 	private Driver driver;
 	private double amount;
 	private String pgProvider;
-
+  
 	@Builder
 	public Payment(Long id, Match match, Passenger passenger, Driver driver,
 		double amount, String pgProvider) {
@@ -30,6 +31,6 @@ public class Payment {
 		this.passenger = passenger;
 		this.driver = driver;
 		this.amount = amount;
-		this.pgProvider = pgProvider;
+		this.pgProvider = pgProvider;  
 	}
 }

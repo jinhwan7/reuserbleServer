@@ -4,9 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.reusable_server.reusableServer.common.entity.BaseEntity;
 import com.reusable_server.reusableServer.driver.domain.Driver;
 import com.reusable_server.reusableServer.match.infra.MatchEntity;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ public class DriverEntity extends BaseEntity {
 	@Column(name = "id")
 	private Long id;
 
+
 	private String state;
 	private String email;
 	private String name;
@@ -45,6 +48,7 @@ public class DriverEntity extends BaseEntity {
 	// 도메인 모델로 변환하는 메서드
 	public Driver toDomain() {
 		return Driver.builder()
+
 			.id(this.id)
 			.state(this.state)
 			.email(this.email)

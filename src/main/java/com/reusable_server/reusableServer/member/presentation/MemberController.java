@@ -1,5 +1,6 @@
 package com.reusable_server.reusableServer.member.presentation;
 
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -10,6 +11,11 @@ import java.util.List;
 
 import com.reusable_server.reusableServer.member.application.MemberService;
 import com.reusable_server.reusableServer.member.domain.Member;
+import com.reusable_server.reusableServer.member.presentation.dtos.request.MemberCreateRequest;
+import com.reusable_server.reusableServer.member.presentation.dtos.response.MemberListResponse;
+import com.reusable_server.reusableServer.member.presentation.dtos.response.MemberSignupResponse;
+import com.reusable_server.reusableServer.member.presentation.dtos.request.MemberUpdateRequest;
+import com.reusable_server.reusableServer.member.presentation.dtos.response.MemberUpdateResponse;
 
 @RestController
 @RequestMapping("/api/members")
@@ -19,30 +25,46 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PostMapping
-	public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
-		return ResponseEntity.ok(memberService.createMember(member));
+	public ApiResponse<?> signup(@Valid @RequestBody MemberCreateRequest memberCreateDTO) {
+
+
+		MemberCreateParam memberCreateParam = MemberCreateParam.from(memberCreateDTO);
+
+		Member createdMember = memberService.createMember(memberCreateParam);
+
+		MemberSignupResponse memberSignupResponse = MemberSignupResponse.of(createdMember);
+		return ApiResponse.of(memberSignupResponse);
+
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Member> findOne(@PathVariable Long id) {
-		return memberService.findOne(id)
-			.map(ResponseEntity::ok)
-			.orElse(ResponseEntity.notFound().build());
+	public ApiResponse<?> findOne(@PathVariable Long id) {
+		Member member = memberService.findOne(id);
+		MemberItemResponse memberItemResponse = MemberItemResponse.of(member);
+		return ApiResponse.of(memberItemResponse);
 	}
 
 	@GetMapping
-	public ResponseEntity<List<Member>> findAll() {
-		return ResponseEntity.ok(memberService.findAll());
+	public ApiResponse<?> findAll() {
+		List<Member> members = memberService.findAll();
+		MemberListResponse memberListResponse = MemberListResponse.of(members);
+
+		return ApiResponse.of(memberListResponse);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Member> updateMember(@PathVariable Long id, @Valid @RequestBody Member member) {
-		return ResponseEntity.ok(memberService.updateMember(id, member));
+	public ApiResponse<?> updateMember(@PathVariable Long id,
+		@Valid @RequestBody MemberUpdateRequest memberUpdateRequest) {
+		MemberUpdateParam memberUpdateParam = MemberUpdateParam.from(memberUpdateRequest);
+		Member updatedMember = memberService.updateMember(id, memberUpdateParam);
+		MemberUpdateResponse memberUpdateResponse = MemberUpdateResponse.of(updatedMember);
+
+		return ApiResponse.of(memberUpdateResponse);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
+	public ApiResponse<?> deleteMember(@PathVariable Long id) {
 		memberService.deleteMember(id);
-		return ResponseEntity.noContent().build();
+		return ApiResponse.of(ReturnCode.SUCCESS);
 	}
 }
