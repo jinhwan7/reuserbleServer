@@ -1,14 +1,10 @@
 package com.reusable_server.reusableServer.member.presentation;
 
-import com.reusable_server.reusableServer.common.dto.ApiResponse;
-import com.reusable_server.reusableServer.common.enums.ReturnCode;
-import com.reusable_server.reusableServer.member.application.dtos.MemberCreateParam;
-import com.reusable_server.reusableServer.member.application.dtos.MemberUpdateParam;
-import com.reusable_server.reusableServer.member.presentation.dtos.response.MemberItemResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

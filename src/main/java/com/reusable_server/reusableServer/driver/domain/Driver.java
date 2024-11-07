@@ -12,28 +12,24 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Driver {
-	private Long driverId;
+
+	private Long id;
+
 	private String state;
 	private String email;
 	private String name;
 	private String password;
-	private LocalDateTime createdDateTime;
-	private LocalDateTime deletedDateTime;
+
 
 	@Builder
 	public Driver(
-		Long driverId,
+		Long id,
 		String state,
-		LocalDateTime createdDateTime,
-		LocalDateTime deletedDateTime,
 		String name,
 		String password,
 		String email) {
-
-		this.driverId = driverId;
+		this.id = id;
 		this.state = state;
-		this.createdDateTime = createdDateTime;
-		this.deletedDateTime = deletedDateTime;
 		this.name = name;
 		this.password = password;
 		this.email = email;
