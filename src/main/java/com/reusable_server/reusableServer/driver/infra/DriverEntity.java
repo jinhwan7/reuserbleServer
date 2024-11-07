@@ -4,10 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
 
+import com.reusable_server.reusableServer.common.entity.BaseEntity;
 import com.reusable_server.reusableServer.driver.domain.Driver;
-import com.reusable_server.reusableServer.match.imfra.MatchEntity;
+import com.reusable_server.reusableServer.match.infra.MatchEntity;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,12 +26,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DriverEntity {
+public class DriverEntity extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "driver_id")
-	private Long driverId;
+	@Column(name = "id")
+	private Long id;
+
 
 	private String state;
 	private String email;
@@ -40,36 +42,29 @@ public class DriverEntity {
 	@OneToMany(mappedBy = "driver")
 	private List<MatchEntity> matchs = new ArrayList<>();
 
-	@Column(name = "created_date_time")
-	@CreationTimestamp
-	private LocalDateTime createdDateTime;
-
 	@Column(name = "deleted_date_time")
 	private LocalDateTime deletedDateTime;
 
 	// 도메인 모델로 변환하는 메서드
 	public Driver toDomain() {
 		return Driver.builder()
-			.driverId(this.driverId)
+
+			.id(this.id)
 			.state(this.state)
 			.email(this.email)
 			.name(this.name)
 			.password(this.password)
-			.createdDateTime(this.createdDateTime)
-			.deletedDateTime(this.deletedDateTime)
 			.build();
 	}
 
 	// 도메인 모델로부터 엔티티를 생성하는 정적 메서드
 	public static DriverEntity fromDomain(Driver driver) {
 		DriverEntity entity = new DriverEntity();
-		entity.setDriverId(driver.getDriverId());
+		entity.setId(driver.getId());
 		entity.setState(driver.getState());
 		entity.setEmail(driver.getEmail());
 		entity.setName(driver.getName());
 		entity.setPassword(driver.getPassword());
-		entity.setCreatedDateTime(driver.getCreatedDateTime());
-		entity.setDeletedDateTime(driver.getDeletedDateTime());
 		return entity;
 	}
 }

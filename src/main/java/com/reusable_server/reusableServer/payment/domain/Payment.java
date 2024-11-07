@@ -15,23 +15,22 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Payment {
-	private Long paymentId;
+
+	private Long id;
 	private Match match;
 	private Passenger passenger;
 	private Driver driver;
 	private double amount;
 	private String pgProvider;
-	private LocalDateTime createdDateTime;
-
+  
 	@Builder
-	public Payment(Long paymentId, Match match, Passenger passenger, Driver driver,
-		double amount, String pgProvider, LocalDateTime createdDateTime) {
-		this.paymentId = paymentId;
+	public Payment(Long id, Match match, Passenger passenger, Driver driver,
+		double amount, String pgProvider) {
+		this.id = id;
 		this.match = match;
 		this.passenger = passenger;
 		this.driver = driver;
 		this.amount = amount;
-		this.pgProvider = pgProvider;
-		this.createdDateTime = createdDateTime;
+		this.pgProvider = pgProvider;  
 	}
 }
