@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Match {
 
-	private Long matchId;
+	private Long id;
 	private Driver driver;
 	private Passenger passenger;
 	private RideState rideState;
@@ -34,7 +34,7 @@ public class Match {
 
 	@Builder
 	public Match(
-		Long matchId,
+		Long id,
 		Driver driver,
 		Passenger passenger,
 		RideState rideState,
@@ -46,7 +46,7 @@ public class Match {
 		LocalDateTime acceptedDateTime,
 		LocalDateTime createdDateTime,
 		LocalDateTime deletedDateTime) {
-		this.matchId = matchId;
+		this.id = id;
 		this.driver = driver;
 		this.passenger = passenger;
 		this.rideState = rideState;
