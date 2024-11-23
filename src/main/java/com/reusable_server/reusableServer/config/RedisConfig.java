@@ -1,19 +1,18 @@
 package com.reusable_server.reusableServer.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-/**
- * Redis 설정을 위한 클래스입니다.
- * 이 클래스는 Redis 연결 및 RedisTemplate 구성을 담당합니다.
- */
 @Configuration
+@EnableCaching
 public class RedisConfig {
 
 	/**
@@ -51,8 +50,8 @@ public class RedisConfig {
 
 	    // String 타입의 key를 위한 Serializer 설정
 	    redisTemplate.setKeySerializer(new StringRedisSerializer());
-	    // Object 타입의 value를 위한 JSON Serializer 설정
 
+	    // Object 타입의 value를 위한 JSON Serializer 설정
 	    redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
 	    // Hash Operation을 위한 Serializer 설정
