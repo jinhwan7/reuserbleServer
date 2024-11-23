@@ -43,6 +43,9 @@ dependencies {
 
 	// Jackson Annotations (JsonInclude 등의 어노테이션 포함)
 	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.3'
+
+	//redis client
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {

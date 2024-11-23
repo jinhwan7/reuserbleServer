@@ -34,16 +34,8 @@ import lombok.Setter;
 public class MatchEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "match_id")
-	private Long matchId;
-
-	//이 부분 어떻게 해야하는지
-	//보통 지우고 아래의 JoinColumn만 쓰는지
-	@Column(name = "passenger_id")
-	private Long passengerId;
-
-	@Column(name = "driver_id")
-	private Long driverId;
+	@Column(name = "id")
+	private Long id;
 
 	private String rideState;
 
@@ -80,7 +72,7 @@ public class MatchEntity {
 
 	public static MatchEntity fromDomain(Match match) {
 		MatchEntity entity = new MatchEntity();
-		entity.setMatchId(match.getMatchId());
+		entity.setId(match.getId());
 		entity.setRideState(match.getRideState().name());
 		entity.setStartPoint(match.getStartPoint());
 		entity.setEndPoint(match.getEndPoint());
@@ -100,7 +92,7 @@ public class MatchEntity {
 
 	public Match toDomain() {
 		return Match.builder()
-			.matchId(this.matchId)
+			.id(this.id)
 			.passenger(this.passenger.toDomain())
 			.driver(this.driver.toDomain())
 			.rideState(RideState.valueOf(this.rideState))
