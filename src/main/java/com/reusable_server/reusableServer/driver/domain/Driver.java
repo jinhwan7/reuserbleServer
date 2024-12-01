@@ -2,6 +2,8 @@ package com.reusable_server.reusableServer.driver.domain;
 
 import java.time.LocalDateTime;
 
+import com.reusable_server.reusableServer.match.domain.Location;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +21,7 @@ public class Driver {
 	private String email;
 	private String name;
 	private String password;
-
+	private Location location;
 
 	@Builder
 	public Driver(
@@ -27,12 +29,14 @@ public class Driver {
 		String state,
 		String name,
 		String password,
-		String email) {
+		String email,
+		Location location) {
 		this.id = id;
 		this.state = state;
 		this.name = name;
 		this.password = password;
 		this.email = email;
+		this.location = location;
 	}
 
 }
