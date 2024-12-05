@@ -2,6 +2,7 @@ package com.reusable_server.reusableServer.driver.domain;
 
 import java.time.LocalDateTime;
 
+import com.reusable_server.reusableServer.common.enums.DriverStateCode;
 import com.reusable_server.reusableServer.match.domain.Location;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class Driver {
 
 	private Long id;
 
-	private String state;
+	private DriverStateCode state;
 	private String email;
 	private String name;
 	private String password;
@@ -26,7 +27,7 @@ public class Driver {
 	@Builder
 	public Driver(
 		Long id,
-		String state,
+		DriverStateCode state,
 		String name,
 		String password,
 		String email,
