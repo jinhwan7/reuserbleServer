@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reusable_server.reusableServer.common.dto.ApiResponse;
@@ -44,10 +45,9 @@ public class DriverController {
 
 	}
 
-	// 여기에 Redis 적용?
 	@GetMapping()
-	public ApiResponse<?> findAll(@PathVariable Long id) {
-		List<Driver> drivers = driverService.findAll();
+	public ApiResponse<?> findAllWithLocation(@RequestParam Double latitude, @RequestParam Double longitude) {
+		List<Driver> drivers = driverService.findAllWithLocation(latitude, longitude);
 		DriverListResponse driverListResponse = DriverListResponse.of(drivers);
 		return ApiResponse.of(driverListResponse);
 	}
