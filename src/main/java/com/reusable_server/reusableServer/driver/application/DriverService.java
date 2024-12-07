@@ -2,17 +2,15 @@ package com.reusable_server.reusableServer.driver.application;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.geo.*;
-import org.springframework.data.redis.connection.RedisGeoCommands;
 
+import com.reusable_server.reusableServer.common.enums.DriverStateCode;
 import com.reusable_server.reusableServer.common.enums.ReturnCode;
 import com.reusable_server.reusableServer.common.exception.ReuserbleException;
 import com.reusable_server.reusableServer.driver.domain.Driver;
@@ -37,7 +35,7 @@ public class DriverService {
 			.email(param.getEmail())
 			.password(param.getPassword())
 			.name(param.getName())
-			.state("ACTIVE")
+			.state(DriverStateCode.IDLE)
 			.build();
 		DriverEntity driverEntity = DriverEntity.fromDomain(driver);
 		DriverEntity savedEntity = driverRepository.save(driverEntity);
@@ -45,49 +43,44 @@ public class DriverService {
 	}
 
 	public Driver findOne(Long id) {
-        DriverEntity driverEntity =  driverRepository.findById(id)
+		DriverEntity driverEntity = driverRepository.findById(id)
 			.orElseThrow(() -> new ReuserbleException(ReturnCode.NOT_FOUND_ENTITY));
-
-		return driverEntity.toDomain();
+		Driver driver = driverEntity.toDomain();
+		return driver;
 	}
 
 	@Cacheable(value = "drivers", key = "'all'")
 	public List<Driver> findAll() {
 		List<DriverEntity> driverEntities = driverRepository.findAll();
-		return driverEntities.stream()
-			.map(DriverEntity::toDomain)
-			.collect(Collectors.toList());
+		List<Driver> drivers = driverEntities.stream().map(DriverEntity::toDomain).collect(Collectors.toList());
+		return drivers;
 	}
 
+	public List<String> findDriversWithLocation(Double latitude, Double longitude) {
+		String key = "driver:locations";
+		Distance radius = new Distance(5, Metrics.KILOMETERS);
+		Circle circle = new Circle(new Point(longitude, latitude), radius);
+
+		GeoResults<RedisGeoCommands.GeoLocation<Object>> results = redisTemplate.opsForGeo()
+			.radius(key, circle);
+
+		List<String> driverIds = results.getContent().stream()
+			.map(result -> (String)result.getContent().getName())
+			.collect(Collectors.toList());
+
+		return driverIds;
+	}
 
 	public void updateLocation(Long driverId, Location location) {
-		String key = "driver:locations";  
-		redisTemplate.opsForGeo().add(
-			key,
-			new Point(location.getLongitude(), location.getLatitude()),
-			driverId.toString()
-		);
+		String key = "driver:locations";
+		redisTemplate.opsForGeo()
+			.add(key, new Point(location.getLongitude(), location.getLatitude()), driverId.toString());
 	}
 
-
-	public Location getDriverLocation(Long driverId) {
-		String key = "driver:location:" + driverId;
-		Location location = (Location) redisTemplate.opsForValue().get(key);
-		
-		if (location == null) {
-			DriverEntity driver = driverRepository.findById(driverId)
-				.orElseThrow(() -> new ReuserbleException(ReturnCode.NOT_FOUND_ENTITY));
-			location = driver.getLocation();
-			redisTemplate.opsForValue().set(key, location);
-		}
-		
-		return location;
-	}
-	
 	public void updateDriverState(Long driverId, String state) {
 		String key = "driver:state:" + driverId;
 		redisTemplate.opsForValue().set(key, state);
-		
+
 		DriverEntity driver = driverRepository.findById(driverId)
 			.orElseThrow(() -> new ReuserbleException(ReturnCode.NOT_FOUND_ENTITY));
 		driver.setState(state);
