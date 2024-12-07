@@ -10,6 +10,8 @@ import com.reusable_server.reusableServer.match.domain.Match;
 import com.reusable_server.reusableServer.passenger.infra.PassengerEntity;
 import com.reusable_server.reusableServer.payment.infra.PaymentEntity;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -38,9 +40,17 @@ public class MatchEntity extends BaseEntity {
 	private String rideState;
 
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "latitude", column = @Column(name = "start_latitude")),
+		@AttributeOverride(name = "longitude", column = @Column(name = "start_longitude"))
+	})
 	private Location startPoint;
 
 	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "latitude", column = @Column(name = "end_latitude")),
+		@AttributeOverride(name = "longitude", column = @Column(name = "end_longitude"))
+	})
 	private Location endPoint;
 
 	private double estimatedAmount;

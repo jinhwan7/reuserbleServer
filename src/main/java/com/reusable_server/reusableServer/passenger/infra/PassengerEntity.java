@@ -8,7 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.reusable_server.reusableServer.favoriteLocation.domain.FavoriteLocation;
 import com.reusable_server.reusableServer.favoriteLocation.infra.FavoriteLocationEntity;
-import com.reusable_server.reusableServer.match.imfra.MatchEntity;
+import com.reusable_server.reusableServer.match.infra.MatchEntity;
 import com.reusable_server.reusableServer.passenger.domain.Passenger;
 
 import jakarta.persistence.Column;
