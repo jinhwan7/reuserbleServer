@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum DriverStateCode {
-	INSERVICE("in_service"),
-	WAITING("waiting"),
-	ONCALL("oncall"),
-	OFF("off");
+	INSERVICE,
+	WAITING,
+	ONCAL,
+	OFF
 
-	private String status;
+
 }
