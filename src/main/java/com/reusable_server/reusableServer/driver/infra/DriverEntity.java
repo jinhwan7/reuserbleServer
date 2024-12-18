@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.reusable_server.reusableServer.common.entity.BaseEntity;
+import com.reusable_server.reusableServer.common.enums.DriverStateCode;
 import com.reusable_server.reusableServer.driver.domain.Driver;
 import com.reusable_server.reusableServer.match.domain.Location;
 import com.reusable_server.reusableServer.match.infra.MatchEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +35,9 @@ public class DriverEntity extends BaseEntity {
 	@Column(name = "id")
 	private Long id;
 
-	private String state;
+	@Enumerated(EnumType.STRING)
+	private DriverStateCode state;
+
 	private String email;
 	private String name;
 	private String password;
