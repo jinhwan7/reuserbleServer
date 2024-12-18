@@ -4,14 +4,16 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.reusable_server.reusableServer.common.entity.BaseEntity;
+import com.reusable_server.reusableServer.common.enums.DriverStateCode;
 import com.reusable_server.reusableServer.driver.domain.Driver;
+import com.reusable_server.reusableServer.match.domain.Location;
 import com.reusable_server.reusableServer.match.infra.MatchEntity;
-
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,11 +35,13 @@ public class DriverEntity extends BaseEntity {
 	@Column(name = "id")
 	private Long id;
 
+	@Enumerated(EnumType.STRING)
+	private DriverStateCode state;
 
-	private String state;
 	private String email;
 	private String name;
 	private String password;
+	private Location location;
 
 	@OneToMany(mappedBy = "driver")
 	private List<MatchEntity> matchs = new ArrayList<>();
@@ -48,12 +52,12 @@ public class DriverEntity extends BaseEntity {
 	// 도메인 모델로 변환하는 메서드
 	public Driver toDomain() {
 		return Driver.builder()
-
 			.id(this.id)
 			.state(this.state)
 			.email(this.email)
 			.name(this.name)
 			.password(this.password)
+			.location(this.location)
 			.build();
 	}
 
