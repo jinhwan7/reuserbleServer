@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum DriverStateCode {
 	INSERVICE("in_service"),
-	IDLE("idle"),
+	WAITING("waiting"),
 	ONCALL("oncall"),
 	OFF("off");
 

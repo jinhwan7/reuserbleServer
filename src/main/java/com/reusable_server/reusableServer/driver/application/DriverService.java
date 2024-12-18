@@ -35,7 +35,7 @@ public class DriverService {
 			.email(param.getEmail())
 			.password(param.getPassword())
 			.name(param.getName())
-			.state(DriverStateCode.IDLE)
+			.state(DriverStateCode.WAITING)
 			.build();
 		DriverEntity driverEntity = DriverEntity.fromDomain(driver);
 		DriverEntity savedEntity = driverRepository.save(driverEntity);
